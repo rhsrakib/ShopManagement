@@ -1,0 +1,83 @@
+﻿@model ShopManagement.ViewModel.VmShop
+@{
+    ViewData["Title"] = "Index";
+    var indexItem = 0;
+    var ButtonValue = Model.CustomerId > 0 ? "Update" : "Add";
+}
+
+<div class="container mt-5">
+    <form id="form" asp-controller="Home" asp-action="Index" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-3">
+                <input type="hidden" asp-for="CustomerId" />
+                <div class="form-group">
+                    <label asp-for="PurchaseDate">Purchase Date:</label>
+                    <input type="date" class="form-control" id="PurchaseDate" name="PurchaseDate" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="CustomerName">Customer Name:</label>
+                    <input type="text" class="form-control" id="CustomerName" name="CustomerName" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Phone">Phone Number:</label>
+                    <input type="text" class="form-control" id="Phone" name="Phone" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address">Address:</label>
+                    <input type="text" class="form-control" id="Address" name="Address" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Gender">Gender:</label>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="Male" name="Gender" value="Male" checked />
+                        <label class="form-check-label" for="Male">Male</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="Female" name="Gender" value="Female" />
+                        <label class="form-check-label" for="Female">Female</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CounterId">Counter:</label>
+                    <select class="form-control" asp-for="CounterId" asp-items="ViewBag.Counter">
+                    </select>
+                </div><br />
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success">@ButtonValue</button>
+                    <a asp-action="Index" class="btn btn-warning">Reset</a>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Photo</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tSD">
+                        @foreach (var item in Model.Products)
+                        {
+                            <tr id="tr_@indexItem">
+                                <td><input type="text" id="ProductName_@indexItem" name="ProductName" value="@item.ProductName" class="form-control" /></td>
+                                <td><input type="file" id="Photo_@indexItem" name="img" value="@item.Photo" /></td>
+                                <td><input type="number" id="UnitPrice_@indexItem" name="UnitPrice" value="@item.UnitPrice" class="form-control" /></td>
+                                <td><input type="number" id="Quantity_@indexItem" name="Quantity" value="@item.Quantity" class="form-control" /></td>
+                                <td><input type="number" id="TotalPrice_@indexItem" name="TotalPrice" value="@item.TotalPrice" class="form-control" /></td>
+                                <td><button class="btn btn-danger" asp-action="javascript:void(0)" onclick="removeItem(@indexItem)">Remove</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="text-right">
+                    <button type="button" onclick="addItem();" class="btn btn-primary">Add Product</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

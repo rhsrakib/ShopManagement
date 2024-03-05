@@ -1,0 +1,102 @@
+﻿@model ShopManagement.ViewModel.VmShop
+@{
+    ViewData["Title"] = "Index";
+    var indexItem = 0;
+    var listCustomer = ViewData["ListC"] as List<ShopManagement.Models.Customer>;
+    var listProduct = ViewData["ListP"] as List<ShopManagement.Models.Product>;
+}
+
+<h1 class="mb-4">SPA Master Details CRUD</h1>
+<partial name="_PartialView" />
+
+<div class="container mt-5">
+    <h1 class="mb-4">Customer Details</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Customer Id</th>
+                    <th scope="col">Purchase Date</th>
+                    <th scope="col">Customer Name</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in listCustomer)
+                {
+                    <tr>
+                        <td>@item.CustomerId</td>
+                        <td>@item.PurchaseDate</td>
+                        <td>@item.CustomerName</td>
+                        <td>@item.Phone</td>
+                        <td>@item.Address</td>
+                        <td>@item.Gender</td>
+                        <td>
+                            <a class="btn btn-primary" asp-action="Index" asp-route-id="@item.CustomerId">Edit</a>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h1 class="mb-4">Customer Products</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Customer Id</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Photo</th>
+                    <th scope="col">Unit Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total Price</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in listProduct)
+                {
+                    <tr>
+                        <td>@item.CustomerId</td>
+                        <td>@item.ProductName</td>
+                        <td><img src="@item.Photo" style="max-width: 100px; max-height: 100px;" /></td>
+                        <td>$@item.UnitPrice</td>
+                        <td>@item.Quantity</td>
+                        <td>$@item.TotalPrice</td>
+                        <td>
+                            <a class="btn btn-primary" asp-action="Index" asp-route-id="@item.CustomerId">Edit</a>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    var indexItem = @indexItem;
+    function addItem() {
+        indexItem += 1;
+        var tr = `<tr id="tr_${indexItem}">
+                                <td><input type="text" id="ProductName_" name="ProductName" value="" /></td>
+                                <td><input type="file" id="Photo_" name="img" value="" /></td>
+                                <td><input type="number" id="UnitPrice_" name="UnitPrice" value="" /></td>
+                                <td><input type="number" id="Quantity_" name="Quantity" value="" /></td>
+                                <td><input type="number" id="TotalPrice_" name="TotalPrice" value="" /></td>
+                                <td><button class="btn btn-danger" asp-action="javascript:void(0)" onclick="removeItem(${indexItem})">Remove</button></td>
+                            </tr>`;
+        document.getElementById("tSD").innerHTML += tr;
+    }
+    function removeItem(id) {
+        document.getElementById("tr_" + id).remove();
+    }
+</script>
+
